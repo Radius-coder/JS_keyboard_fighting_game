@@ -3,6 +3,7 @@ Another fighter game making use of keyboard inputs
 
 ## Controls
 Use left and right arrow keys to move and press Space bar to attack
+
 ## Screenshot
 ![image](https://github.com/Radius-coder/JS_keyboard_fighting_game/assets/67561957/eeed9d24-e09a-4dca-afe9-11e12ee28051)
 ![image](https://github.com/Radius-coder/JS_keyboard_fighting_game/assets/67561957/568f2849-63f7-4d18-8bc0-a8e85b97de53)
@@ -11,6 +12,7 @@ Use left and right arrow keys to move and press Space bar to attack
 
 ## What needs to be fixed?
 Enemy AI - need to find a balance so AI will attack user and also dodge.
+
 Collisions - need to fine tune collision areas so user cant register a hit unless touching enemy
 
 Game over screen needs added
