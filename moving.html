@@ -1,0 +1,114 @@
+<html>
+<body>
+<script>
+var playerObj = null;
+var enemyObj = null;
+let eHealth = 100;
+let pHealth = 100;
+
+function init(){
+ playerObj = document.getElementById("player");
+ playerObj.style.position = 'relative';
+ playerObj.style.left = '0px';
+ enemyObj = document.getElementById("enemy");
+ enemyObj.style.position = 'relative';
+ enemyObj.style.left = '200px';
+}
+
+function sleep(ms){return new Promise(resolve => setTimeout(resolve, ms));}
+
+window.addEventListener("keydown", async function (event) {
+  if (event.defaultPrevented) {
+    return; // Do nothing if the event was already processed
+  }
+ 
+ async function enemyTurn(){
+   if(parseInt(playerObj.style.left) < parseInt(enemyObj.style.left)){
+	console.log("move enemy left");
+	enemyObj.style.left = parseInt(enemyObj.style.left) + -10 + 'px';
+	console.log("ENEMY: "+enemyObj.style.left);
+   }
+   else if(parseInt(playerObj.style.left) >= parseInt(enemyObj.style.left)+40 && parseInt(playerObj.style.left) < parseInt(enemyObj.style.left)+120){
+	console.log("enemy attacks");
+	document.getElementById('enemy').src = 'enemy_attack.gif';
+        await sleep(800);
+	let damage =  Math.floor(Math.random() * 11)
+	document.getElementById("playerHealth").innerHTML = pHealth-damage;
+	pHealth -= damage;
+	document.getElementById('enemy').src = "enemy.gif";
+	playerObj.style.left = parseInt(playerObj.style.left) + -30 + 'px';
+	await sleep(1800);
+   }
+   else{
+	console.log("move enemy right");
+	enemyObj.style.left = parseInt(enemyObj.style.left) + 10 + 'px';
+	console.log("ENEMY: "+enemyObj.style.left);
+   }
+  }
+
+  switch (event.key) {
+    case "ArrowDown":
+	console.log("DOWN");
+
+      // code for "down arrow" key press.
+      break;
+    case "ArrowUp":
+      // code for "up arrow" key press.
+      break;
+    case "ArrowLeft":
+      // code for "left arrow" key press.
+      while(true){	
+       playerObj.style.left = parseInt(playerObj.style.left) + -20 + 'px';
+       break;
+      }
+      enemyTurn();
+      console.log(playerObj.style.left);
+      break;
+    case "ArrowRight":
+      // code for "right arrow" key press.
+      while(true){	
+       playerObj.style.left = parseInt(playerObj.style.left) + 20 + 'px';
+       break;
+      }
+      enemyTurn();
+      console.log(playerObj.style.left);
+      break;
+    case " ":
+	console.log("Space");
+	document.getElementById('player').src = "ryu_attack.gif";
+        await sleep(800);
+	if(parseInt(playerObj.style.left) >= parseInt(enemyObj.style.left) && parseInt(playerObj.style.left) < parseInt(enemyObj.style.left)+120){
+	 console.log("Player hit enemy");
+  	 let damage =  Math.floor(Math.random() * 11)
+	 document.getElementById("enemyHealth").innerHTML = eHealth-damage;
+	 eHealth -= damage;
+	}
+	document.getElementById('player').src = "ryu.gif";
+        break;
+    default:
+      enemyTurn();
+      console.log(playerObj.style.left);
+      return; // Quit when this doesn't handle the key event.
+  }
+
+  // Cancel the default action to avoid it being handled twice
+  event.preventDefault();
+}, true);
+// the last option dispatches the event to the listener first,
+// then dispatches event to window
+
+window.onload = init;
+</script>
+<div>
+ <img id = "player" src = "ryu.gif"/>
+ <img id = "enemy" src = "enemy.gif"/>
+</div>
+<div style=float:'left';>
+<p>Health</p>
+<p id="playerHealth">100</p>
+</div>
+<div style=float:'right';>
+<p>Enemy Health</p>
+<p id="enemyHealth">100</p>
+</body>
+</html>
