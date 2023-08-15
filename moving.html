@@ -1,12 +1,32 @@
 <html>
+<head>
+<style>
+.button {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+</style>
+</head>
 <body>
 <script>
 var playerObj = null;
 var enemyObj = null;
 let eHealth = 100;
 let pHealth = 100;
+let gameOver = 0;
 
-function init(){
+function init(){ 
+ document.getElementById("restart").style.display = "none";
  playerObj = document.getElementById("player");
  playerObj.style.position = 'relative';
  playerObj.style.left = '0px';
@@ -17,6 +37,29 @@ function init(){
 
 function sleep(ms){return new Promise(resolve => setTimeout(resolve, ms));}
 
+function endGame(){
+	if(pHealth <= 0){
+		document.getElementById("endScreen").src = "youwin.gif";
+		document.getElementById("endScreen").style = "display:inline-block;margin-left:auto;margin-right:auto;width:50%;";
+		enemyObj = "";
+		document.getElementById("enemy").src = "enemy_win.gif";
+		document.getElementById("restart").style.display = "block";
+		playerObj = "";
+		document.getElementById("player").src = "";
+
+	}else{
+		document.getElementById("endScreen").src = "youwin.gif";
+		document.getElementById("endScreen").style = "display:inline-block;margin-left:auto;margin-right:auto;width:50%;";
+		playerObj = "";
+		document.getElementById("player").src = "ryu_win.gif";
+		enemyObj = "";
+		document.getElementById("enemy").src = "";
+		document.getElementById("restart").style.display = "block";
+	}
+
+}
+
+
 window.addEventListener("keydown", async function (event) {
   if (event.defaultPrevented) {
     return; // Do nothing if the event was already processed
@@ -26,66 +69,111 @@ window.addEventListener("keydown", async function (event) {
    if(parseInt(playerObj.style.left) < parseInt(enemyObj.style.left)){
 	console.log("move enemy left");
 	enemyObj.style.left = parseInt(enemyObj.style.left) + -10 + 'px';
+	if(parseInt(enemyObj.style.left) <= 0){
+	 enemyObj.style.left = parseInt(enemyObj.style.left) + 10 + 'px';
+        }
 	console.log("ENEMY: "+enemyObj.style.left);
    }
-   else if(parseInt(playerObj.style.left) >= parseInt(enemyObj.style.left)+40 && parseInt(playerObj.style.left) < parseInt(enemyObj.style.left)+120){
+   else if(parseInt(playerObj.style.left) >= parseInt(enemyObj.style.left)+40 && parseInt(playerObj.style.left) < parseInt(enemyObj.style.left)+140){
 	console.log("enemy attacks");
 	document.getElementById('enemy').src = 'enemy_attack.gif';
         await sleep(800);
 	let damage =  Math.floor(Math.random() * 11)
 	document.getElementById("playerHealth").innerHTML = pHealth-damage;
 	pHealth -= damage;
+	if(pHealth <= 0){
+		endGame();
+	}
 	document.getElementById('enemy').src = "enemy.gif";
 	playerObj.style.left = parseInt(playerObj.style.left) + -30 + 'px';
 	await sleep(1800);
    }
-   else{
+   else if(parseInt(playerObj.style.left) >= parseInt(enemyObj.style.left)+40){
 	console.log("move enemy right");
-	enemyObj.style.left = parseInt(enemyObj.style.left) + 10 + 'px';
+	enemyObj.style.left = parseInt(enemyObj.style.left) + 50 + 'px';
 	console.log("ENEMY: "+enemyObj.style.left);
    }
   }
-
+	
   switch (event.key) {
     case "ArrowDown":
 	console.log("DOWN");
-
-      // code for "down arrow" key press.
-      break;
-    case "ArrowUp":
-      // code for "up arrow" key press.
-      break;
-    case "ArrowLeft":
-      // code for "left arrow" key press.
-      while(true){	
-       playerObj.style.left = parseInt(playerObj.style.left) + -20 + 'px';
-       break;
-      }
-      enemyTurn();
-      console.log(playerObj.style.left);
-      break;
-    case "ArrowRight":
-      // code for "right arrow" key press.
-      while(true){	
-       playerObj.style.left = parseInt(playerObj.style.left) + 20 + 'px';
-       break;
-      }
-      enemyTurn();
-      console.log(playerObj.style.left);
-      break;
-    case " ":
-	console.log("Space");
-	document.getElementById('player').src = "ryu_attack.gif";
-        await sleep(800);
-	if(parseInt(playerObj.style.left) >= parseInt(enemyObj.style.left) && parseInt(playerObj.style.left) < parseInt(enemyObj.style.left)+120){
+	document.getElementById('player').src = "ryu_attack2.gif";
+        await sleep(1700);
+	if(parseInt(playerObj.style.left) >= parseInt(enemyObj.style.left) && parseInt(playerObj.style.left) < parseInt(enemyObj.style.left)+140){
 	 console.log("Player hit enemy");
   	 let damage =  Math.floor(Math.random() * 11)
 	 document.getElementById("enemyHealth").innerHTML = eHealth-damage;
 	 eHealth -= damage;
+	 if(eHealth <= 0){
+		endGame();	
+	 }
+	 enemyObj.style.left = parseInt(enemyObj.style.left) + -30 + 'px';
+	}
+	document.getElementById('player').src = "ryu.gif";
+        break;
+      
+    case "ArrowUp":
+	console.log("UP");
+	document.getElementById('player').src = "ryu_attack3.gif";
+        await sleep(800);
+	if(parseInt(playerObj.style.left) >= parseInt(enemyObj.style.left) && parseInt(playerObj.style.left) < parseInt(enemyObj.style.left)+140){
+	 console.log("Player hit enemy");
+  	 let damage =  Math.floor(Math.random() * 11)
+	 document.getElementById("enemyHealth").innerHTML = eHealth-damage;
+	 eHealth -= damage;
+	 if(eHealth <= 0){
+		endGame();	
+	 }
+	 enemyObj.style.left = parseInt(enemyObj.style.left) + -30 + 'px';
+	}
+	document.getElementById('player').src = "ryu.gif";
+        break;
+      
+    case "a":
+      // code for "left arrow" key press.
+      while(true){	
+       playerObj.style.left = parseInt(playerObj.style.left) + -20 + 'px';
+       if(parseInt(playerObj.style.left) <= 0){
+	playerObj.style.left = parseInt(playerObj.style.left) + 30 + 'px';
+       }
+       break;
+      }
+      enemyTurn();
+      console.log(playerObj.style.left);
+      break;
+    case "d":
+      // code for "right arrow" key press.
+      while(true){	
+       playerObj.style.left = parseInt(playerObj.style.left) + 20 + 'px';
+       enemyObj.style.left = parseInt(enemyObj.style.left) + 20 + 'px';
+       break;
+      }
+      enemyTurn();
+      console.log(playerObj.style.left);
+      break;
+    case "ArrowLeft":
+	console.log("Space");
+	document.getElementById('player').src = "ryu_attack.gif";
+        await sleep(800);
+	if(parseInt(playerObj.style.left) >= parseInt(enemyObj.style.left) && parseInt(playerObj.style.left) < parseInt(enemyObj.style.left)+140){
+	 console.log("Player hit enemy");
+  	 let damage =  Math.floor(Math.random() * 11)
+	 document.getElementById("enemyHealth").innerHTML = eHealth-damage;
+	 eHealth -= damage;
+	 if(eHealth <= 0){
+		endGame();	
+	 }
+	 enemyObj.style.left = parseInt(enemyObj.style.left) + -30 + 'px';
 	}
 	document.getElementById('player').src = "ryu.gif";
         break;
     default:
+      console.log(gameOver);	
+      if(gameOver == 1){
+	console.log("GAME OVER");
+	window.stop();
+      }
       enemyTurn();
       console.log(playerObj.style.left);
       return; // Quit when this doesn't handle the key event.
@@ -98,17 +186,25 @@ window.addEventListener("keydown", async function (event) {
 // then dispatches event to window
 
 window.onload = init;
+
 </script>
+<div id = "restart">
+<button class="button" onclick="location.reload()">Restart!</button>
+</div>
 <div>
- <img id = "player" src = "ryu.gif"/>
- <img id = "enemy" src = "enemy.gif"/>
+ <div>
+  <img id = "player" src = "ryu.gif"/>
+  <img id ="endScreen" src = ""/>
+  <img id = "enemy" src = "enemy.gif"/>
+ </div>
+ <div style="float:left;margin-left:0px;">
+  <p>Health</p>
+  <p id="playerHealth">100</p>
+ </div>
+ <div style="float:right;margin-right:550px;">
+  <p>Enemy Health</p>
+  <p id="enemyHealth">100</p>
+ </div>
 </div>
-<div style=float:'left';>
-<p>Health</p>
-<p id="playerHealth">100</p>
-</div>
-<div style=float:'right';>
-<p>Enemy Health</p>
-<p id="enemyHealth">100</p>
 </body>
 </html>
