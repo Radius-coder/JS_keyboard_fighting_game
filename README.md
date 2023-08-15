@@ -2,7 +2,7 @@
 Another fighter game making use of keyboard inputs
 
 ## Controls
-Use left and right arrow keys to move and press Space bar to attack
+Use A and D keys to move and press Left, Up and Down arrows to use different attacks.
 
 ## Screenshot
 ![image](https://github.com/Radius-coder/JS_keyboard_fighting_game/assets/67561957/eeed9d24-e09a-4dca-afe9-11e12ee28051)
