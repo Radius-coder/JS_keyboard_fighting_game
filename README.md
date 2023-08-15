@@ -13,6 +13,4 @@ Use A and D keys to move and press Left, Up and Down arrows to use different att
 ## What needs to be fixed?
 Enemy AI - need to find a balance so AI will attack user and also dodge.
 
-Collisions - need to fine tune collision areas so user cant register a hit unless touching enemy
-
-Game over screen needs added
+Collisions - need to fine tune collision areas so user cant register a hit unless touching enemy.
